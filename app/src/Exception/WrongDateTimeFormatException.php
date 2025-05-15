@@ -2,7 +2,7 @@
 
 namespace App\Exception;
 
-class WrongDateTimeFormat extends DomainException
+class WrongDateTimeFormatException extends DomainException
 {
     public function __construct(
         $message = 'Wrong date-time format',

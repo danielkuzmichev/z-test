@@ -4,7 +4,7 @@ namespace App\Repository\Record;
 
 use App\Entity\Record;
 use App\Exception\NotFoundException;
-use App\Exception\WrongDateTimeFormat;
+use App\Exception\WrongDateTimeFormatException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -51,7 +51,7 @@ class RecordRepository extends ServiceEntityRepository implements RecordReposito
         if (isset($criteria['date']) && $criteria['date'] !== null) {
             $dateTime = \DateTime::createFromFormat('d.m.Y', $criteria['date']);
             if(!$dateTime) {
-                throw new WrongDateTimeFormat("Required format is 'd.m.Y'");
+                throw new WrongDateTimeFormatException("Required format is 'd.m.Y'");
             }
             $this->mixinDate($qb, $dateTime);
         }
