@@ -25,13 +25,13 @@ class RecordRepository extends ServiceEntityRepository implements RecordReposito
     }
 
     /**
-    * @return Record Returns an Record objects
-    */
+     * @return Record Returns an Record objects
+     */
     public function getById(string $id): Record
     {
         $record = $this->find($id);
 
-        if($record === null) {
+        if (null === $record) {
             throw new NotFoundException("Not found record with id=$id");
         }
 
@@ -39,18 +39,18 @@ class RecordRepository extends ServiceEntityRepository implements RecordReposito
     }
 
     /**
-    * @return Record[] Returns an array of Record objects
-    */
+     * @return Record[] Returns an array of Record objects
+     */
     public function getAll(array $criteria, int $page = 1, int $limit = 10): array
     {
         $qb = $this->getQueryBuilder();
-        if (isset($criteria['name']) && $criteria['name'] !== null) {
+        if (isset($criteria['name']) && null !== $criteria['name']) {
             $this->mixinName($qb, $criteria['name']);
         }
-        
-        if (isset($criteria['date']) && $criteria['date'] !== null) {
+
+        if (isset($criteria['date']) && null !== $criteria['date']) {
             $dateTime = \DateTime::createFromFormat('d.m.Y', $criteria['date']);
-            if(!$dateTime) {
+            if (!$dateTime) {
                 throw new WrongDateTimeFormatException("Required format is 'd.m.Y'");
             }
             $this->mixinDate($qb, $dateTime);
@@ -67,14 +67,14 @@ class RecordRepository extends ServiceEntityRepository implements RecordReposito
     {
         $qb
             ->andWhere('r.title LIKE :name')
-            ->setParameter('name', '%' . $name . '%');
+            ->setParameter('name', '%'.$name.'%');
     }
 
     private function mixinDate(QueryBuilder $qb, \DateTimeInterface $date): void
     {
         $startOfDay = (clone $date)->setTime(0, 0, 0);
         $endOfDay = (clone $date)->setTime(23, 59, 59);
-    
+
         $qb
             ->andWhere('r.changeAt BETWEEN :start AND :end')
             ->setParameter('start', $startOfDay)

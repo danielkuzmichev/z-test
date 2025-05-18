@@ -35,3 +35,6 @@ test-deploy: db-test-create migrate-test fixtures-test
 
 test:
 	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) bin/phpunit
+
+cs-fix:
+	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) ./vendor/bin/php-cs-fixer fix

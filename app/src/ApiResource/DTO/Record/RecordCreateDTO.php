@@ -15,5 +15,6 @@ class RecordCreateDTO
         public string $status,
         #[Assert\NotBlank]
         public string $title,
-    ) {}
+    ) {
+    }
 }

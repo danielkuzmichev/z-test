@@ -8,8 +8,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\Exception\ValidationFailedException;
 
 #[AsEventListener(event: 'kernel.exception', method: 'onKernelException')]
 class ExceptionListener
@@ -28,8 +28,8 @@ class ExceptionListener
         }
 
         if (
-            $exception instanceof HttpException &&
-            ($prev = $exception->getPrevious()) instanceof ValidationFailedException
+            $exception instanceof HttpException
+            && ($prev = $exception->getPrevious()) instanceof ValidationFailedException
         ) {
             return $this->createValidationErrorResponse($prev);
         }

@@ -2,11 +2,11 @@
 
 namespace App\Tests\Functional;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Record;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class RecordTest extends WebTestCase
 {
@@ -17,7 +17,7 @@ class RecordTest extends WebTestCase
     {
         $this->client = static::createClient();
         $this->em = static::getContainer()->get(EntityManagerInterface::class);
-        $this->em->beginTransaction(); 
+        $this->em->beginTransaction();
     }
 
     public function testCreateRecord(): void
@@ -44,7 +44,7 @@ class RecordTest extends WebTestCase
 
         $this->assertNotNull($record, 'Тест требует хотя бы одну запись в базе.');
 
-        $this->client->request('GET', '/api/record/' . $record->getId());
+        $this->client->request('GET', '/api/record/'.$record->getId());
 
         $this->assertResponseIsSuccessful();
         $data = json_decode($this->client->getResponse()->getContent(), true);
@@ -83,7 +83,7 @@ class RecordTest extends WebTestCase
 
         $changeAt = '14.08.2022';
 
-        $this->client->request('GET', '/api/records?date=' . $changeAt . '&page=1&limit=5');
+        $this->client->request('GET', '/api/records?date='.$changeAt.'&page=1&limit=5');
 
         $this->assertResponseIsSuccessful();
 
@@ -92,13 +92,13 @@ class RecordTest extends WebTestCase
 
         $found = false;
         foreach ($data as $item) {
-            if ($item['number'] === '17662-2') {
+            if ('17662-2' === $item['number']) {
                 $found = true;
                 break;
             }
         }
 
-         $this->assertTrue($found);
+        $this->assertTrue($found);
     }
 
     public function testInvalidDatetimeFormat(): void
@@ -108,7 +108,7 @@ class RecordTest extends WebTestCase
 
         $changeAt = $record->getChangeAt()->format('Y-m-d');
 
-        $this->client->request('GET', '/api/records?date=' . $changeAt . '&page=1&limit=5');
+        $this->client->request('GET', '/api/records?date='.$changeAt.'&page=1&limit=5');
 
         $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }

@@ -19,6 +19,7 @@ class RecordResponseDTO
         public string $title,
         #[Assert\NotBlank]
         #[Assert\DateTime()]
-        public \DateTimeInterface $changeAt
-    ) {}
+        public \DateTimeInterface $changeAt,
+    ) {
+    }
 }

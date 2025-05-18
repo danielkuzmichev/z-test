@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 class RecordFixtures extends Fixture
 {
     private const BATCH_SIZE = 25;
-    private string $csvPath = __DIR__ . '/../data/test_task_data.csv';
+    private string $csvPath = __DIR__.'/../data/test_task_data.csv';
 
     public function load(ObjectManager $em): void
     {
@@ -18,7 +18,6 @@ class RecordFixtures extends Fixture
         $i = 0;
 
         while (($row = fgetcsv($handle, 1000, ',')) !== false) {
-
             [$externalCode, $number, $status, $title, $changedAt] = $row;
 
             $record = new Record();
@@ -27,7 +26,7 @@ class RecordFixtures extends Fixture
             $record->setStatus(trim($status));
             $record->setTitle(trim($title));
             $date = \DateTime::createFromFormat('d.m.Y H:i:s', trim($changedAt));
-            if ($date === false) {
+            if (false === $date) {
                 continue;
             }
             $record->setChangeAt($date);

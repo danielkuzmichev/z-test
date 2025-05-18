@@ -5,15 +5,15 @@ namespace App\Command;
 use App\Entity\Record;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Command\Command;
 
 #[AsCommand(name: 'app:import')]
 class ImportCommand extends Command
 {
     private const BATCH_SIZE = 50;
-    private string $csvPath = __DIR__ . '/../../migrations/data/test_task_data.csv';
+    private string $csvPath = __DIR__.'/../../migrations/data/test_task_data.csv';
 
     public function __construct(private EntityManagerInterface $em)
     {
@@ -24,11 +24,13 @@ class ImportCommand extends Command
     {
         if (!file_exists($this->csvPath)) {
             $output->writeln("<error>CSV file not found: {$this->csvPath}</error>");
+
             return Command::FAILURE;
         }
 
         if (($handle = fopen($this->csvPath, 'r')) === false) {
             $output->writeln("<error>Failed to open file: {$this->csvPath}</error>");
+
             return Command::FAILURE;
         }
 
@@ -39,7 +41,7 @@ class ImportCommand extends Command
 
         while (($row = fgetcsv($handle, 1000, ',')) !== false) {
             if (count($row) < 5) {
-                $output->writeln("<comment>Skipping invalid row</comment>");
+                $output->writeln('<comment>Skipping invalid row</comment>');
                 continue;
             }
 
@@ -51,7 +53,7 @@ class ImportCommand extends Command
             $record->setStatus(trim($status));
             $record->setTitle(trim($title));
             $date = \DateTime::createFromFormat('d.m.Y H:i:s', trim($changedAt));
-            if ($date === false) {
+            if (false === $date) {
                 $output->writeln("<comment>Invalid date format: $changedAt</comment>");
                 continue;
             }
