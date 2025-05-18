@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\ApiResource\DTO\Record\RecordCreateDTO;
+use App\ApiResource\DTO\Record\RecordResponseDTO;
 use App\Service\Record\RecordService;
+use Nelmio\ApiDocBundle\Attribute\Model;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,13 +23,13 @@ class RecordController extends AbstractController
         summary: 'Создать запись',
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/RecordCreateDTO')
+            content: new OA\JsonContent(ref: new Model(type: RecordCreateDTO::class))
         ),
         responses: [
             new OA\Response(
                 response: 200,
                 description: 'Успешное создание',
-                content: new OA\JsonContent()
+                content: new OA\JsonContent(ref: new Model(type: RecordResponseDTO::class))
             ),
             new OA\Response(
                 response: 400,
@@ -57,7 +59,7 @@ class RecordController extends AbstractController
             new OA\Response(
                 response: 200,
                 description: 'Успешный ответ',
-                content: new OA\JsonContent()
+                content: new OA\JsonContent(ref: new Model(type: RecordResponseDTO::class))
             ),
             new OA\Response(
                 response: 404,
@@ -84,7 +86,7 @@ class RecordController extends AbstractController
             new OA\Response(
                 response: 200,
                 description: 'Список записей',
-                content: new OA\JsonContent(type: 'array', items: new OA\Items(type: 'object'))
+                content: new OA\JsonContent(type: 'array', items: new OA\Items(type: 'object', ref: new Model(type: RecordResponseDTO::class)))
             )
         ]
     )]

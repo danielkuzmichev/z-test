@@ -3,7 +3,7 @@
 namespace App\Service\Record;
 
 use App\ApiResource\DTO\Record\RecordCreateDTO;
-use App\DTO\RecordResponseDTO;
+use App\ApiResource\DTO\Record\RecordResponseDTO;
 use App\Entity\Record;
 use App\Exception\DuplicateException;
 use App\Repository\Record\RecordRepositoryInterface;

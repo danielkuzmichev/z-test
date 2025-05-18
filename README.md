@@ -16,3 +16,21 @@ make deploy
 ## UI для проверки API
 
 Приложение можно прверить в ручную через SWAGGER UI http://localhost:8000/api/doc
+
+# Запуск тестов PHPUnit
+
+## Через make
+
+Создание тестовых базы и данных
+
+```bash
+make test-deploy
+```
+
+Выполнение тестов
+
+```bash
+make test
+```
+
+

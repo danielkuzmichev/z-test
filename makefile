@@ -18,3 +18,20 @@ fixtures:
 	docker compose exec app php -d memory_limit=512M bin/console doctrine:fixtures:load --no-interaction
 
 deploy: up install migrate fixtures
+
+db-test-create:
+	$(CONSOLE) doctrine:database:create --env=test --if-not-exists
+
+db-test-drop:
+	$(CONSOLE) doctrine:database:drop --env=test --force --if-exists
+
+migrate-test:
+	$(CONSOLE) doctrine:migrations:migrate --env=test --no-interaction
+
+fixtures-test:
+	docker compose exec app php -d memory_limit=512M doctrine:fixtures:load --env=test --no-interaction
+
+test-deploy: db-test-create migrate-test fixtures-test
+
+test:
+	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) bin/phpunit
