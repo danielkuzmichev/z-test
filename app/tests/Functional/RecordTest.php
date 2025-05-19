@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RecordTest extends WebTestCase
 {
+    private const TOKEN = 1;
+
     private KernelBrowser $client;
     private EntityManagerInterface $em;
 
@@ -30,7 +32,16 @@ class RecordTest extends WebTestCase
             'changeAt' => (new \DateTime())->format('Y-m-d H:i:s'),
         ];
 
-        $this->client->request('POST', '/api/record', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode($payload));
+        $this->client->request(
+            'POST', '/api/record',
+            [],
+            [],
+            [
+                'HTTP_Authorization' => 'Bearer '.self::TOKEN,
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            json_encode($payload)
+        );
 
         $this->assertResponseIsSuccessful();
         $data = json_decode($this->client->getResponse()->getContent(), true);
@@ -44,7 +55,16 @@ class RecordTest extends WebTestCase
 
         $this->assertNotNull($record, 'Тест требует хотя бы одну запись в базе.');
 
-        $this->client->request('GET', '/api/record/'.$record->getId());
+        $this->client->request(
+            'GET',
+            '/api/record/'.$record->getId(),
+            [],
+            [],
+            [
+                'HTTP_Authorization' => 'Bearer '.self::TOKEN,
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
 
         $this->assertResponseIsSuccessful();
         $data = json_decode($this->client->getResponse()->getContent(), true);
@@ -53,7 +73,16 @@ class RecordTest extends WebTestCase
 
     public function testRecordNotFound(): void
     {
-        $this->client->request('GET', '/api/record/99999999');
+        $this->client->request(
+            'GET',
+            '/api/record/99999999',
+            [],
+            [],
+            [
+                'HTTP_Authorization' => 'Bearer '.self::TOKEN,
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
     }
@@ -71,7 +100,17 @@ class RecordTest extends WebTestCase
             'changeAt' => (new \DateTime())->format('Y-m-d H:i:s'),
         ];
 
-        $this->client->request('POST', '/api/record', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode($payload));
+        $this->client->request(
+            'POST',
+            '/api/record',
+            [],
+            [],
+            [
+                'HTTP_Authorization' => 'Bearer '.self::TOKEN,
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            json_encode($payload)
+        );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
@@ -83,7 +122,16 @@ class RecordTest extends WebTestCase
 
         $changeAt = '14.08.2022';
 
-        $this->client->request('GET', '/api/records?date='.$changeAt.'&page=1&limit=5');
+        $this->client->request(
+            'GET',
+            '/api/records?date='.$changeAt.'&page=1&limit=5',
+            [],
+            [],
+            [
+                'HTTP_Authorization' => 'Bearer '.self::TOKEN,
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
 
         $this->assertResponseIsSuccessful();
 
@@ -108,7 +156,16 @@ class RecordTest extends WebTestCase
 
         $changeAt = $record->getChangeAt()->format('Y-m-d');
 
-        $this->client->request('GET', '/api/records?date='.$changeAt.'&page=1&limit=5');
+        $this->client->request(
+            'GET',
+            '/api/records?date='.$changeAt.'&page=1&limit=5',
+            [],
+            [],
+            [
+                'HTTP_Authorization' => 'Bearer '.self::TOKEN,
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }

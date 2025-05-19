@@ -70,6 +70,7 @@ class ExceptionListener
         return new JsonResponse([
             'error' => 'Internal Server Error',
             'message' => $exception->getMessage(),
+            'trace' => $exception->getTraceAsString(),
         ], $statusCode);
     }
 }

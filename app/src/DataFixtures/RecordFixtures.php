@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataFixtures\Record;
+namespace App\DataFixtures;
 
 use App\Entity\Record;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 class RecordFixtures extends Fixture
 {
     private const BATCH_SIZE = 25;
-    private string $csvPath = __DIR__.'/../data/test_task_data.csv';
+    private string $csvPath = __DIR__.'/data/test_task_data.csv';
 
     public function load(ObjectManager $em): void
     {

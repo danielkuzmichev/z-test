@@ -29,7 +29,7 @@ migrate-test:
 	$(CONSOLE) doctrine:migrations:migrate --env=test --no-interaction
 
 fixtures-test:
-	docker compose exec app php -d memory_limit=512M doctrine:fixtures:load --env=test --no-interaction
+	docker compose exec app php -d memory_limit=512M bin/console doctrine:fixtures:load --env=test --no-interaction
 
 test-deploy: db-test-create migrate-test fixtures-test
 

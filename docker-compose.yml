@@ -11,6 +11,7 @@ services:
       - ./app:/var/www/html
     depends_on:
       - db
+      - redis
 
   db:
     image: postgres:15
@@ -21,8 +22,6 @@ services:
       POSTGRES_DB: tenders
     ports:
       - "5432:5432"
-    volumes:
-      - db-data:/var/lib/postgresql/data
 
   nginx:
     image: nginx:latest
@@ -35,5 +34,10 @@ services:
     depends_on:
       - app
 
-volumes:
-  db-data:
+  redis:
+    container_name: redis
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+
